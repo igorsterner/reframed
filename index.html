@@ -1,25 +1,442 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Reframed</title>
-<style>
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    margin: 0;
-    padding: 2rem;
-    color: #1a1a1a;
-    background: #fff;
-  }
-  p { font-size: 1.1rem; line-height: 1.6; max-width: 32rem; text-align: center; }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <meta name="title" content="REFRAMED">
+  <meta name="description" content="We introduce a new formulation of AD generation in which models must jointly decide what to describe and when to do it, alongside a high-quality dataset and evaluation metrics that support the task.">
+  <meta name="keywords" content="audio description, dataset, narrative, screenplay, narration, benchmark, multimodal, llm, vlm, accessibility, movie, video">
+  <meta name="author" content="Igor Sterner, Mirella Lapata, Alex Lascarides, Frank Keller">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  <link rel="canonical" href="https://igorsterner.github.io/reframed/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="REFRAMED">
+  <meta property="og:title" content="REFRAMED">
+  <meta property="og:description" content="We introduce a new formulation of AD generation in which models must jointly decide what to describe and when to do it, alongside a high-quality dataset and evaluation metrics that support the task.">
+  <meta property="og:url" content="https://igorsterner.github.io/reframed/">
+  <meta property="og:image" content="https://igorsterner.github.io/reframed/static/images/reframed-preview.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:image:alt" content="REFRAMED logo: “frame” enclosed in a red rounded rectangle">
+  <meta property="article:section" content="Research">
+  <meta property="article:author" content="Igor Sterner">
+  <meta property="article:author" content="Mirella Lapata">
+  <meta property="article:author" content="Alex Lascarides">
+  <meta property="article:author" content="Frank Keller">
+  <meta property="article:tag" content="audio description">
+  <meta property="article:tag" content="dataset">
+  <meta property="article:tag" content="narrative">
+  <meta property="article:tag" content="screenplay">
+  <meta property="article:tag" content="narration">
+  <meta property="article:tag" content="benchmark">
+  <meta property="article:tag" content="multimodal">
+  <meta property="article:tag" content="llm">
+  <meta property="article:tag" content="vlm">
+  <meta property="article:tag" content="accessibility">
+  <meta property="article:tag" content="movie">
+  <meta property="article:tag" content="video">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="REFRAMED">
+  <meta name="twitter:description" content="We introduce a new formulation of AD generation in which models must jointly decide what to describe and when to do it, alongside a high-quality dataset and evaluation metrics that support the task.">
+  <meta name="twitter:image" content="https://igorsterner.github.io/reframed/static/images/reframed-preview.png">
+  <meta name="twitter:image:alt" content="REFRAMED logo: “frame” enclosed in a red rounded rectangle">
+
+  <meta name="citation_title" content="REFRAMED: Towards Realistic Audio Description Generation for Movies">
+  <meta name="citation_author" content="Igor Sterner">
+  <meta name="citation_author" content="Mirella Lapata">
+  <meta name="citation_author" content="Alex Lascarides">
+  <meta name="citation_author" content="Frank Keller">
+  <meta name="citation_publication_date" content="2026/10">
+  <meta name="citation_conference_title" content="Third Conference on Language Modeling (COLM 2026)">
+  <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2608.09765.pdf">
+
+  <!-- Additional SEO -->
+  <meta name="theme-color" content="#2563eb">
+  <meta name="msapplication-TileColor" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ajax.googleapis.com">
+  <link rel="preconnect" href="https://documentcloud.adobe.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+
+  <title>REFRAMED</title>
+  
+  <!-- Favicon and App Icons -->
+  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico?v=2">
+  <link rel="apple-touch-icon" sizes="180x180" href="static/images/apple-touch-icon.png">
+  
+  <!-- Critical CSS - Load synchronously -->
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  
+  <!-- Non-critical CSS - Load asynchronously -->
+  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+  <!-- Fallback for browsers that don't support preload -->
+  <noscript>
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  </noscript>
+  
+  <!-- Fonts - Optimized loading -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Defer non-critical JavaScript -->
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+  
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "headline": "REFRAMED: Towards Realistic Audio Description Generation for Movies",
+  "description": "We introduce a new formulation of AD generation in which models must jointly decide what to describe and when to do it, alongside a high-quality dataset and evaluation metrics that support the task.",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Igor Sterner",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "School of Informatics, University of Edinburgh"
+      }
+    },
+    {
+      "@type": "Person",
+      "name": "Mirella Lapata",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "School of Informatics, University of Edinburgh"
+      }
+    },
+    {
+      "@type": "Person",
+      "name": "Alex Lascarides",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "School of Informatics, University of Edinburgh"
+      }
+    },
+    {
+      "@type": "Person",
+      "name": "Frank Keller",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "School of Informatics, University of Edinburgh"
+      }
+    }
+  ],
+  "isPartOf": {
+    "@type": "CreativeWork",
+    "name": "Third Conference on Language Modeling (COLM 2026)"
+  },
+  "url": "https://igorsterner.github.io/reframed/",
+  "image": "https://igorsterner.github.io/reframed/static/images/reframed-preview.png",
+  "keywords": [
+    "audio description",
+    "dataset",
+    "narrative",
+    "screenplay",
+    "narration",
+    "benchmark",
+    "multimodal",
+    "llm",
+    "vlm",
+    "accessibility",
+    "movie",
+    "video"
+  ],
+  "abstract": "Audio Description (AD) is a verbal narration of key visual content in videos, enabling access for visually impaired audiences. Unlike standard video captioning, AD is a structured editorial task: descriptions must be inserted into gaps in dialogue and must convey only what is needed to understand the narrative being told. However, existing approaches formulate AD generation in an artificial setting where both the content and timing of descriptions are pre-specified, reducing the task to clip-level captioning. They further rely on noisy transcription and alignment pipelines, and lack the rich parallel data required for modeling narrative context. We introduce a new formulation of AD generation in which models must jointly decide what to describe and when to do it. To support this, we present REFRAMED, a high-quality dataset of 2,023 videos that span 3,302 scenes from 206 movies, with professional AD transcripts (both American and British versions), professional subtitles and aligned screenplays. We also provide a manually curated challenge set that pairs full movies with multiple AD references, together with evaluation protocols that leverage dialogue gaps and multi-reference comparisons. Experiments with state-of-the-art AD systems and multimodal LLMs show that they outperform trivial baselines but fall far short of expert human performance. Our dataset and benchmark establish a new foundation for research on video understanding.",
+  "citation": "@inproceedings{sterner2026reframed,\n  title={{REFRAMED}: Towards Realistic Audio Description Generation for Movies},\n  author={Igor Sterner and Mirella Lapata and Alex Lascarides and Frank Keller},\n  booktitle={Third Conference on Language Modeling},\n  year={2026},\n  url={https://openreview.net/forum?id=8VyU9qy4Vy}\n}",
+  "isAccessibleForFree": true,
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://igorsterner.github.io/reframed/"
+  },
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "Audio description"
+    },
+    {
+      "@type": "Thing",
+      "name": "Video understanding"
+    }
+  ]
+}
+  </script>
 </head>
 <body>
-<p>This page will be updated one week in advance of COLM 2026.</p>
-</body>
-</html>
+
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <!-- More Works Dropdown -->
+  <div class="more-works-container">
+    <button class="more-works-btn" onclick="toggleMoreWorks()" title="Other relevant papers from my PhD">
+      <i class="fas fa-flask"></i>
+      More Papers
+      <i class="fas fa-chevron-down dropdown-arrow"></i>
+    </button>
+    <div class="more-works-dropdown" id="moreWorksDropdown">
+      <div class="dropdown-header">
+        <h4>Other relevant papers from my PhD</h4>
+        <button class="close-btn" onclick="toggleMoreWorks()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="works-list">
+        <!-- TODO: Replace with your lab's related works -->
+
+        <!-- TODO: Add more related works or remove extra items -->
+        <div class="work-item">
+          <div class="work-info">
+            <h5>What, When, and How: Audio Description as Constrained Global Optimization</h5>
+            <p>See this paper for an approach that jointly selects, schedules, and formulates audio descriptions to convey narratively important information within dialogue gaps.</p>
+            <span class="work-venue">Arxiv</span>
+          </div>
+        </div>
+        <a href="https://arxiv.org/abs/2608.09792" class="work-item" target="_blank">
+          <div class="work-info">
+            <!-- TODO: Replace with actual paper title -->
+            <h5>Comparing British and American Audio Description of Movies</h5>
+            <!-- TODO: Replace with brief description -->
+            <p>See this paper for a deeper investigation into the differences between the two reference AD versions used for REFRAMED.</p>
+            <!-- TODO: Replace with venue and year -->
+            <span class="work-venue">CMN 2026 Workshop</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+        <a href="https://arxiv.org/abs/2601.07765" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>Contrastive Learning with Narrative Twins for Modeling Story Salience</h5>
+            <p>See this paper for a study on predicting the narrative salience of each unit in a story.</p>
+            <span class="work-venue">EACL 2026</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content">
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <!-- TODO: Replace with your paper title -->
+            <h1 class="title is-1 publication-title"><span class="reframed-wordmark">Re<span class="reframed-frame">frame</span>d</span>: Towards Realistic Audio Description Generation for Movies</h1>
+            <div class="is-size-5 publication-authors">
+              <!-- TODO: Replace with your paper authors and their personal links -->
+              <span class="author-block">
+                <a href="https://igorsterner.github.io/" target="_blank">Igor Sterner</a>,</span>
+                <span class="author-block">
+                  <a href="https://homepages.inf.ed.ac.uk/mlap/" target="_blank">Mirella Lapata</a>,</span>
+                  <span class="author-block">
+                    <a href="https://homepages.inf.ed.ac.uk/alex/" target="_blank">Alex Lascarides</a>,
+                  </span>
+                  <span class="author-block">
+                    <a href="https://homepages.inf.ed.ac.uk/keller/" target="_blank">Frank Keller</a>
+                  </span>
+                  </div>
+
+                  <div class="is-size-5 publication-authors">
+                    <!-- TODO: Replace with your institution and conference/journal info -->
+                    <span class="author-block">School of Informatics, University of Edinburgh, United Kingdom<br>COLM 2026</span>
+                  </div>
+
+                  <div class="column has-text-centered">
+                    <div class="publication-links">
+                         <!-- TODO: Update with your arXiv paper ID -->
+                      <span class="link-block">
+                        <a href="https://arxiv.org/pdf/2608.09765.pdf" target="_blank"
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                          <i class="fas fa-file-pdf"></i>
+                        </span>
+                        <span>Paper</span>
+                      </a>
+                    </span>
+
+                  <!-- TODO: Replace with your GitHub repository URL -->
+                  <span class="link-block">
+                    <a href="https://github.com/igorsterner/reframedeval" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Evaluation Code</span>
+                  </a>
+                </span>
+
+                  <!-- TODO: Replace with your GitHub repository URL -->
+                  <span class="link-block">
+                    <a href="https://huggingface.co/datasets/igorsterner/reframed" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" style="width: 1em; height: 1em; vertical-align: middle;">
+                    </span>
+                    <span>Dataset</span>
+                  </a>
+                </span>
+
+                <span class="link-block">
+                  <span class="button is-normal is-rounded is-static">More data (coming soon)</span>
+                </span>
+
+                <!-- TODO: Update with your arXiv paper ID -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2608.09765" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Teaser video-->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <h2 class="title is-3 has-text-centered">Example</h2>
+      <div class="timed-demo">
+        <div class="publication-banner">
+          <video id="video" controls playsinline preload="metadata" aria-label="The Girl with the Dragon Tattoo scene">
+            <source src="static/videos/ofdvX951xl2S.mp4" type="video/mp4">
+            Your browser does not support embedded video. <a href="static/videos/ofdvX951xl2S.mp4">Download the video</a>.
+          </video>
+        </div>
+        <p id="demo-error" class="notification is-warning is-light" role="status" hidden></p>
+    <div class="demo-controls" role="group" aria-label="Accessibility controls">
+      <fieldset id="subtitle-choice">
+        <legend>Video captions (overlaid on video)</legend>
+        <div class="options">
+          <label class="radio"><input type="radio" name="captions" value="subs" checked> Subtitles</label>
+          <label class="radio"><input type="radio" name="captions" value="subs-sdh"> SDH</label>
+          <label class="radio"><input type="radio" name="captions" value="us"> AD (US)</label>
+          <label class="radio"><input type="radio" name="captions" value="uk"> AD (UK)</label>
+          <label class="radio"><input type="radio" name="captions" value="off"> None</label>
+        </div>
+      </fieldset>
+      <fieldset id="text-choice">
+        <legend>Text panel (below)</legend>
+        <div class="options">
+          <label class="radio"><input type="radio" name="text" value="subs"> Subtitles</label>
+          <label class="radio"><input type="radio" name="text" value="subs-sdh"> SDH</label>
+          <label class="radio"><input type="radio" name="text" value="us" checked> AD (US)</label>
+          <label class="radio"><input type="radio" name="text" value="uk"> AD (UK)</label>
+          <label class="radio"><input type="radio" name="text" value="screenplay"> Screenplay</label>
+          <label class="radio"><input type="radio" name="text" value="off"> None</label>
+        </div>
+      </fieldset>
+    </div>
+    <div class="streams">
+      <section id="us"><h2 class="title is-5" id="us-heading">Audio description (US)</h2><div class="transcript" tabindex="0" role="region" aria-labelledby="us-heading">Loading…</div></section>
+      <section id="uk" hidden><h2 class="title is-5" id="uk-heading">Audio description (UK)</h2><div class="transcript" tabindex="0" role="region" aria-labelledby="uk-heading">Loading…</div></section>
+      <section id="subs" hidden><h2 class="title is-5" id="subs-heading">Subtitles</h2><div class="transcript" tabindex="0" role="region" aria-labelledby="subs-heading">Loading…</div></section>
+      <section id="subs-sdh" hidden><h2 class="title is-5" id="subs-sdh-heading">SDH subtitles</h2><div class="transcript" tabindex="0" role="region" aria-labelledby="subs-sdh-heading">Loading…</div></section>
+      <section id="screenplay" hidden><p class="screenplay-note">The screenplay has no timestamps; scroll to explore it.</p><h2 class="title is-5" id="screenplay-heading">Screenplay</h2><div class="screenplay-text" tabindex="0" role="region" aria-labelledby="screenplay-heading">Loading…</div></section>
+    </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End teaser video -->
+
+<!-- Paper abstract -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <!-- TODO: Replace with your paper abstract -->
+          <p>
+Audio Description (AD) is a verbal narration of key visual content in videos, enabling access for visually impaired audiences. Unlike standard video captioning, AD is a structured editorial task: descriptions must be inserted into gaps in dialogue and must convey only what is needed to understand the narrative being told. However, existing approaches formulate AD generation in an artificial setting where both the content and timing of descriptions are pre-specified, reducing the task to clip-level captioning. They further rely on noisy transcription and alignment pipelines, and lack the rich parallel data required for modeling narrative context. We introduce a new formulation of AD generation in which models must jointly decide <em>what</em> to describe and <em>when</em> to do it. To support this, we present REFRAMED, a high-quality dataset of 2,023 videos that span 3,302 scenes from 206 movies, with professional AD transcripts (both American and British versions), professional subtitles and aligned screenplays. We also provide a manually curated challenge set that pairs full movies with multiple AD references, together with evaluation protocols that leverage dialogue gaps and multi-reference comparisons. Experiments with state-of-the-art AD systems and multimodal LLMs show that they outperform trivial baselines but fall far short of expert human performance. Our dataset and benchmark establish a new foundation for research on video understanding.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End paper abstract -->
+
+
+<!--BibTex citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <div class="bibtex-header">
+        <h2 class="title">BibTeX</h2>
+        <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+          <i class="fas fa-copy"></i>
+          <span class="copy-text">Copy</span>
+        </button>
+      </div>
+      <pre id="bibtex-code"><code>@inproceedings{sterner2026reframed,
+  title={{REFRAMED}: Towards Realistic Audio Description Generation for Movies},
+  author={Igor Sterner and Mirella Lapata and Alex Lascarides and Frank Keller},
+  booktitle={Third Conference on Language Modeling},
+  year={2026},
+  url={https://openreview.net/forum?id=8VyU9qy4Vy}
+}</code></pre>
+    </div>
+</section>
+<!--End BibTex citation -->
+
+
+  </main>
+
+  <footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+
+          <p>
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Statcounter tracking code -->
+  
+<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+
+    <!-- End of Statcounter Code -->
+
+    <script defer src="static/js/timed-demo.js"></script>
+  </body>
+  </html>
