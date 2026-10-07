@@ -206,13 +206,14 @@
         <!-- TODO: Replace with your lab's related works -->
 
         <!-- TODO: Add more related works or remove extra items -->
-        <div class="work-item">
+        <a href="https://arxiv.org/abs/2609.30121" class="work-item" target="_blank">
           <div class="work-info">
             <h5>What, When, and How: Audio Description as Constrained Global Optimization</h5>
             <p>See this paper for an approach that jointly selects, schedules, and formulates audio descriptions to convey narratively important information within dialogue gaps.</p>
             <span class="work-venue">Arxiv</span>
           </div>
-        </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
         <a href="https://arxiv.org/abs/2608.09792" class="work-item" target="_blank">
           <div class="work-info">
             <!-- TODO: Replace with actual paper title -->
@@ -298,9 +299,9 @@
                   </a>
                 </span>
 
-                <span class="link-block">
+                <!-- <span class="link-block">
                   <span class="button is-normal is-rounded is-static">More data (coming soon)</span>
-                </span>
+                </span> -->
 
                 <!-- TODO: Update with your arXiv paper ID -->
                 <span class="link-block">
@@ -338,11 +339,11 @@
       <fieldset id="subtitle-choice">
         <legend>Video captions (overlaid on video)</legend>
         <div class="options">
-          <label class="radio"><input type="radio" name="captions" value="subs" checked> Subtitles</label>
-          <label class="radio"><input type="radio" name="captions" value="subs-sdh"> SDH</label>
-          <label class="radio"><input type="radio" name="captions" value="us"> AD (US)</label>
-          <label class="radio"><input type="radio" name="captions" value="uk"> AD (UK)</label>
-          <label class="radio"><input type="radio" name="captions" value="off"> None</label>
+          <label class="radio"><input type="checkbox" name="captions" value="subs" checked> Subtitles</label>
+          <label class="radio"><input type="checkbox" name="captions" value="subs-sdh"> SDH</label>
+          <label class="radio"><input type="checkbox" name="captions" value="us" checked> AD (US)</label>
+          <label class="radio"><input type="checkbox" name="captions" value="uk"> AD (UK)</label>
+          <label class="radio"><input type="checkbox" name="captions" value="off"> None</label>
         </div>
       </fieldset>
       <fieldset id="text-choice">

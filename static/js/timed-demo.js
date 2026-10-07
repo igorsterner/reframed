@@ -9,12 +9,23 @@ textChoice.onchange = () => {
   }
 };
 
+const exclusive = { subs: 'subs-sdh', 'subs-sdh': 'subs', us: 'uk', uk: 'us' };
+
 function selectSubtitles() {
   for (const element of video.querySelectorAll('track[kind="subtitles"]')) {
-    element.track.mode = element.id === `track-${subtitleChoice.querySelector(':checked').value}` ? 'showing' : 'hidden';
+    element.track.mode = subtitleChoice.querySelector(`[value="${element.id.slice(6)}"]`).checked ? 'showing' : 'hidden';
   }
 }
-subtitleChoice.onchange = selectSubtitles;
+subtitleChoice.onchange = event => {
+  const value = event.target.value;
+  if (event.target.checked) {
+    for (const input of subtitleChoice.querySelectorAll('input')) {
+      if (value === 'off' ? input.value !== 'off' : input.value === exclusive[value] || input.value === 'off') input.checked = false;
+    }
+  }
+  if (!subtitleChoice.querySelector(':checked')) subtitleChoice.querySelector('[value="off"]').checked = true;
+  selectSubtitles();
+};
 
 function reportError(message) {
   const output = document.querySelector('#demo-error');
@@ -46,6 +57,7 @@ function setupTrack(id) {
     const rows = Array.from(element.track.cues, cue => {
       const line = document.createElement(isAD ? 'span' : 'p');
       const text = cue.getCueAsHTML().textContent;
+      if (isAD) cue.text = `<c.ad>${cue.text}</c>`;
       line.textContent = isAD ? text.replace(/\s*\n\s*/g, ' ') : text;
       if (isAD) {
         if (!paragraph || adParagraphStarts[id].has(cue.id)) {
@@ -108,10 +120,10 @@ async function setupScreenplay() {
 ['us', 'uk', 'subs', 'subs-sdh'].forEach(setupTrack);
 selectSubtitles();
 video.textTracks.onchange = () => {
-  const showing = [...video.querySelectorAll('track[kind="subtitles"]')]
-    .find(element => element.track.mode === 'showing');
-  const selected = showing ? showing.id.slice(6) : 'off';
-  subtitleChoice.querySelector(`[value="${selected}"]`).checked = true;
+  for (const element of video.querySelectorAll('track[kind="subtitles"]')) {
+    subtitleChoice.querySelector(`[value="${element.id.slice(6)}"]`).checked = element.track.mode === 'showing';
+  }
+  subtitleChoice.querySelector('[value="off"]').checked = !subtitleChoice.querySelector(':checked:not([value="off"])');
   for (const track of video.textTracks) {
     if (track.mode === 'disabled') track.mode = 'hidden';
   }

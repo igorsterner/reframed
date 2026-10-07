@@ -797,6 +797,7 @@ a:focus {
   background: var(--background-accent);
 }
 .demo-controls input { accent-color: var(--primary-color); }
+video::cue(.ad) { color: #ffff00; }
 .demo-controls .radio:focus-within,
 .timed-demo [tabindex]:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 3px; }
 .timed-demo .streams > section {
