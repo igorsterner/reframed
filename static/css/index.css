@@ -205,6 +205,10 @@ body {
   margin-right: 0.5rem;
 }
 
+.author-sep {
+  margin-left: 0.5rem;
+}
+
 .publication-banner img {
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-lg);
