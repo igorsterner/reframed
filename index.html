@@ -209,7 +209,7 @@
         <a href="https://arxiv.org/abs/2609.30121" class="work-item" target="_blank">
           <div class="work-info">
             <h5>What, When, and How: Audio Description as Constrained Global Optimization</h5>
-            <p>See this paper for an approach that jointly selects and schedules descriptions.</p>
+            <p>See this paper for an approach to modeling AD generation that jointly selects and schedules descriptions.</p>
             <span class="work-venue">Arxiv</span>
           </div>
           <i class="fas fa-external-link-alt"></i>
@@ -341,8 +341,8 @@
         <div class="options">
           <label class="radio"><input type="checkbox" name="captions" value="subs" checked> Subtitles</label>
           <label class="radio"><input type="checkbox" name="captions" value="subs-sdh"> SDH</label>
-          <label class="radio"><input type="checkbox" name="captions" value="us" checked> AD (US)</label>
-          <label class="radio"><input type="checkbox" name="captions" value="uk"> AD (UK)</label>
+          <label class="radio"><input type="checkbox" name="captions" value="us"> AD (US)</label>
+          <label class="radio"><input type="checkbox" name="captions" value="uk" checked> AD (UK)</label>
           <label class="radio"><input type="checkbox" name="captions" value="off"> None</label>
         </div>
       </fieldset>
@@ -351,16 +351,16 @@
         <div class="options">
           <label class="radio"><input type="radio" name="text" value="subs"> Subtitles</label>
           <label class="radio"><input type="radio" name="text" value="subs-sdh"> SDH</label>
-          <label class="radio"><input type="radio" name="text" value="us" checked> AD (US)</label>
-          <label class="radio"><input type="radio" name="text" value="uk"> AD (UK)</label>
+          <label class="radio"><input type="radio" name="text" value="us"> AD (US)</label>
+          <label class="radio"><input type="radio" name="text" value="uk" checked> AD (UK)</label>
           <label class="radio"><input type="radio" name="text" value="screenplay"> Screenplay</label>
           <label class="radio"><input type="radio" name="text" value="off"> None</label>
         </div>
       </fieldset>
     </div>
     <div class="streams">
-      <section id="us"><h2 class="title is-5" id="us-heading">Audio description (US)</h2><div class="transcript" tabindex="0" role="region" aria-labelledby="us-heading">Loading…</div></section>
-      <section id="uk" hidden><h2 class="title is-5" id="uk-heading">Audio description (UK)</h2><div class="transcript" tabindex="0" role="region" aria-labelledby="uk-heading">Loading…</div></section>
+      <section id="us" hidden><h2 class="title is-5" id="us-heading">Audio description (US)</h2><div class="transcript" tabindex="0" role="region" aria-labelledby="us-heading">Loading…</div></section>
+      <section id="uk"><h2 class="title is-5" id="uk-heading">Audio description (UK)</h2><div class="transcript" tabindex="0" role="region" aria-labelledby="uk-heading">Loading…</div></section>
       <section id="subs" hidden><h2 class="title is-5" id="subs-heading">Subtitles</h2><div class="transcript" tabindex="0" role="region" aria-labelledby="subs-heading">Loading…</div></section>
       <section id="subs-sdh" hidden><h2 class="title is-5" id="subs-sdh-heading">SDH subtitles</h2><div class="transcript" tabindex="0" role="region" aria-labelledby="subs-sdh-heading">Loading…</div></section>
       <section id="screenplay" hidden><p class="screenplay-note">The screenplay has no timestamps; scroll to explore it.</p><h2 class="title is-5" id="screenplay-heading">Screenplay</h2><div class="screenplay-text" tabindex="0" role="region" aria-labelledby="screenplay-heading">Loading…</div></section>
