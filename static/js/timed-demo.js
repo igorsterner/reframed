@@ -30,9 +30,9 @@ subtitleChoice.onchange = event => {
 function reportError(message) {
   const output = document.querySelector('#demo-error');
   output.hidden = false;
-  output.textContent += `${message} `;
+  output.textContent = message;
 }
-video.addEventListener('error', () => reportError('The video could not be loaded. Please reload the page.'));
+video.addEventListener('error', () => reportError('You may need to reload the page.'));
 const adParagraphStarts = {
   us: new Set(['1', '4', '5', '11', '16']),
   uk: new Set(['1', '3', '4', '7', '13']),
@@ -48,8 +48,8 @@ function setupTrack(id) {
   element.label = document.querySelector(`#${id} h2`).textContent;
   element.src = `static/data/${id}.vtt`;
   element.onerror = () => {
-    output.textContent = "This transcript could not be loaded.";
-    reportError(`Could not load ${element.label}. Please reload the page.`);
+    output.textContent = "You may need to reload the page.";
+    reportError("You may need to reload the page.");
   };
   element.onload = () => {
     output.replaceChildren();
@@ -129,7 +129,7 @@ video.textTracks.onchange = () => {
   }
 };
 setupScreenplay().catch(() => {
-  document.querySelector('.screenplay-text').textContent = 'The screenplay could not be loaded. Please reload the page.';
+  document.querySelector('.screenplay-text').textContent = 'You may need to reload the page.';
 });
 
 })();

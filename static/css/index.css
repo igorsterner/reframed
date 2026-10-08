@@ -828,7 +828,6 @@ video::cue(.ad) { color: #ffff00; }
   color: var(--text-primary);
   box-shadow: inset 0 -2px var(--primary-color);
 }
-.timed-demo .screenplay-note { color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.875rem; }
 .timed-demo .screenplay-text { font-family: monospace; }
 .timed-demo .screenplay-scene { max-width: 85ch; margin: 0 auto 1.5rem; }
 .timed-demo .screenplay-scene h3 { font-size: inherit; font-weight: 700; margin: 0 0 1rem; }
