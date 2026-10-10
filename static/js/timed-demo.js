@@ -38,6 +38,39 @@ const adParagraphStarts = {
   uk: new Set(['1', '3', '4', '7', '13']),
 };
 
+// Cues sit on the bottom edge of the letterboxed picture (1280x532 at y=94 in a 720px frame).
+// Chrome ignores cue.lineAlign, so place each cue's top edge: bottom minus its rendered lines.
+const PICTURE_BOTTOM = (94 + 532) / 720 * 100;
+const LINE_HEIGHT = 8; // % of video height, matches video::cue in index.css
+const placedCues = [];
+const measure = document.createElement('canvas').getContext('2d');
+
+function countLines(text) {
+  // Browsers size cue text at 5% of the video box (index.css scales it by 4/3) and wrap at its full width.
+  measure.font = `${Math.min(video.clientWidth, video.clientHeight) * 0.05 * 4 / 3}px sans-serif`;
+  let lines = 0;
+  for (const paragraph of text.split('\n')) {
+    let current = '';
+    lines++;
+    for (const word of paragraph.split(' ')) {
+      const candidate = current ? `${current} ${word}` : word;
+      if (current && measure.measureText(candidate).width > video.clientWidth) {
+        lines++;
+        current = word;
+      } else {
+        current = candidate;
+      }
+    }
+  }
+  return lines;
+}
+
+function placeCue(cue, text) {
+  cue.snapToLines = false;
+  cue.line = PICTURE_BOTTOM - countLines(text) * LINE_HEIGHT;
+}
+new ResizeObserver(() => placedCues.forEach(({ cue, text }) => placeCue(cue, text))).observe(video);
+
 function setupTrack(id) {
   const output = document.querySelector(`#${id} .transcript`);
   const isAD = id === 'us' || id === 'uk';
@@ -58,6 +91,8 @@ function setupTrack(id) {
       const line = document.createElement(isAD ? 'span' : 'p');
       const text = cue.getCueAsHTML().textContent;
       if (isAD) cue.text = `<c.ad>${cue.text}</c>`;
+      placedCues.push({ cue, text });
+      placeCue(cue, text);
       line.textContent = isAD ? text.replace(/\s*\n\s*/g, ' ') : text;
       if (isAD) {
         if (!paragraph || adParagraphStarts[id].has(cue.id)) {

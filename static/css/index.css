@@ -801,6 +801,8 @@ a:focus {
   background: var(--background-accent);
 }
 .demo-controls input { accent-color: var(--primary-color); }
+/* EBU-TT-D / BBC size: 8% line height (browser default font is 5% of video height) */
+video::cue { font-size: 133.33%; line-height: 1.2; }
 video::cue(.ad) { color: #ffff00; }
 .demo-controls .radio:focus-within,
 .timed-demo [tabindex]:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 3px; }
